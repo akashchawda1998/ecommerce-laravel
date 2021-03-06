@@ -1,26 +1,47 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Order</a>
-        </li>
-          <li class="nav-item">
-          <a class="nav-link" href="#">Chart</a>
-        </li>
-        
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+<?php 
+use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Session;
+
+$total=0;
+if(Session::has('user'))
+{
+  $total= ProductController::cartItem();
+}
+?>
+
+  <nav class="navbar navbar-dark navbar-fixed-top" style="background-color:#2874f0;">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                      <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand" href="/">Shop Now</a>
+                </div>
+                
+                <div class="collapse navbar-collapse" id="myNavbar">
+                  <form class="navbar-form navbar-left" action="/search">
+                  @csrf
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
       </form>
-    </div>
-  </div>
-</nav>
+                    <ul class="nav navbar-nav navbar-right">
+                        @if(Session::has('user'))  
+                        <li><a href="/cartlist"><span class="glyphicon glyphicon-shopping-cart"></span> Cart({{$total}})<span class="badge"></span></a></li>
+
+                      <li><a href="logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                      <li><a href="#"><span class="glyphicon glyphicon-user"></span> {{Session::get('user')['name']}}</a></li>
+
+                      @else
+
+                      <li><a href="/login"><span class="glyphicon glyphicon-log-out"></span> Login</a></li>
+                      <li><a href="/register"><span class="glyphicon glyphicon-log-out"></span> REgister</a></li>
+
+                      @endif
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+  
